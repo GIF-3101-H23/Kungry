@@ -17,12 +17,12 @@ data class Location(val latitude: Double, val longitude: Double){}
 data class RestaurantLight(
     val id: Int,
     val name: String,
-    val cuisine: Cuisine,
+    val cuisine: MutableList<Cuisine>,
     val type: Type,
     val count: Int,
     val average: Int,
     val image: String,
-    val distance: Float,
+    val distance: Double,
     val location: Location
 
 
@@ -34,7 +34,7 @@ data class RestaurantLight(
             val lengh = array.length() - 1
             for(i in 0..lengh)
             {
-
+                restaurants.add(createRestaurant(array.getJSONObject(i)))
             }
             return restaurants
         }
@@ -52,10 +52,21 @@ data class RestaurantLight(
             }
             val count = objects.getInt("review_count")
             val average = objects.getInt("review_average")
-            val cuisine = Cuisine(objects.getJSONObject("cuisine").getInt("id"), objects.getJSONObject("cuisine").getString("name"))
+            val cuisine = createCuisine(objects.getJSONArray("cuisine"))
             val image = objects.getString("image")
-            val location = Location(objects.getJSONObject("Location").getDouble("latitude"),objects.getJSONObject("Location").getDouble("longitude"))
+            val location = Location(objects.getJSONObject("location").getDouble("latitude"),objects.getJSONObject("location").getDouble("longitude"))
+            return RestaurantLight(id, name, cuisine, type, count, average, image, -1.0, location)
 
+        }
+        private fun createCuisine(cuisines : JSONArray): MutableList<Cuisine>
+        {
+            val array = ArrayList<Cuisine>()
+            val lengh = cuisines.length()-1
+            for(i in 0..lengh)
+            {
+                array.add(Cuisine(cuisines.getJSONObject(i).getInt("id"), cuisines.getJSONObject(i).getString("name")))
+            }
+            return array
         }
     }
 

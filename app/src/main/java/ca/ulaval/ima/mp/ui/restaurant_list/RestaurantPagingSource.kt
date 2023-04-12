@@ -44,13 +44,20 @@ class RestaurantPagingSource: PagingSource<Int, RestaurantLight>(){
         val content = result.getJSONObject("content")
         nextPage = content.getInt("next")
         previousPage = content.getInt("previous")
-        val array = restaurants.sortBy { restaurantLight ->restaurantLight.distance  }
+        val array = RestaurantLight.createRestaurants(content.getJSONArray("results"))
 
-
-
-
-
-        TODO("Not yet implemented")
+        return try {
+            LoadResult.Page(data = array,
+                prevKey = when(start){
+                    STARTING_KEY-> null
+                    else -> previousPage
+                },
+                nextKey = nextPage)
+        }
+        catch (e:Exception)
+        {
+            return LoadResult.Error(e)
+        }
     }
 
     private fun ensureValidKey(key: Int) = max(STARTING_KEY, key)
