@@ -126,6 +126,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         googleMap = map
 
+
         // Customize the map
         googleMap.uiSettings.isZoomControlsEnabled = true
         googleMap.uiSettings.isMyLocationButtonEnabled = true
