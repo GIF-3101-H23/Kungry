@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/Prenom_inscrip"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:hint="Prenom"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label_connextion" />
+
+    <EditText
+        android:id="@+id/Nom_inscrip"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:hint="Nom"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/Prenom_inscrip"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/Prenom_inscrip"
+        app:layout_constraintTop_toBottomOf="@+id/Prenom_inscrip" />
+
+    <EditText
+        android:id="@+id/mot_de_passe_ins"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+
+        android:layout_marginTop="8dp"
+        android:hint="Mot de passe"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/courriel_inscrip"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/courriel_inscrip"
+        app:layout_constraintTop_toBottomOf="@+id/courriel_inscrip" />
+
+    <EditText
+        android:id="@+id/courriel_inscrip"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:hint="Courriel"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/Nom_inscrip"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/Nom_inscrip"
+        app:layout_constraintTop_toBottomOf="@+id/Nom_inscrip" />
+
+    <Button
+        android:id="@+id/btn_inscrip"
+        android:layout_width="313dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="36dp"
+        android:text="M'Inscrire"
+        app:backgroundTint="#5DD862"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mot_de_passe_ins" />
+
+    <TextView
+        android:id="@+id/label_connextion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="36dp"
+        android:text="Inscription"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titre" />
+
+    <TextView
+        android:id="@+id/titre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="Kungry"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/click_connextion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="Me connecter"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/label_nouveau"
+        app:layout_constraintTop_toBottomOf="@+id/btn_inscrip" />
+
+    <TextView
+        android:id="@+id/label_nouveau"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="108dp"
+        android:layout_marginLeft="108dp"
+        android:text="Déjà abonné(e)?"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/click_connextion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/click_connextion"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
