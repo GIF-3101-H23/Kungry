@@ -1,9 +1,18 @@
 package ca.ulaval.ima.mp.ui.home
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Criteria
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import ca.ulaval.ima.mp.databinding.FragmentHomeBinding
@@ -19,6 +28,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private var _binding: FragmentHomeBinding? = null
     private lateinit var mapView: MapView
     private lateinit var googleMap: GoogleMap
+    private lateinit var  context: Context
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -47,6 +58,61 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         super.onDestroyView()
         _binding = null
     }
+    private val locationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            // Récupérer la nouvelle position ici et mettre à jour la carte
+            val currentLatLng = LatLng(location.latitude, location.longitude)
+            googleMap.addMarker(MarkerOptions().position(currentLatLng).title("Marker at current location"))
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng))
+        }
+
+        override fun onProviderEnabled(provider: String) {}
+
+        override fun onProviderDisabled(provider: String) {}
+
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+    }
+
+    private fun getLastKnownLocation(context: Context): Location? {
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return null
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 0f, locationListener)
+
+        val criteria = Criteria()
+        val provider = locationManager.getBestProvider(criteria, false)
+        return if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            null
+        } else {
+            if (provider != null) {
+                locationManager.getLastKnownLocation(provider)
+            } else {
+                null
+            }
+        }
+    }
 
     override fun onMapReady(map: GoogleMap) {
 
@@ -56,10 +122,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         googleMap.uiSettings.isZoomControlsEnabled = true
         googleMap.uiSettings.isMyLocationButtonEnabled = true
 
-        // Add a marker in Sydney and move the camera
-        val quebec = LatLng(46.8139, -71.2080)
-        googleMap.addMarker(MarkerOptions().position(quebec).title("Marker in Quebec"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(quebec))
+
+
+        val location = getLastKnownLocation(requireContext())
+
+        // Add a marker in current location and move the camera
+        val currentLatLng = location?.let { LatLng(it.latitude, it.longitude) }
+        if (currentLatLng != null) {
+            googleMap.addMarker(MarkerOptions().position(currentLatLng).title("Home"))
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,15f))
+        }
     }
 
 
