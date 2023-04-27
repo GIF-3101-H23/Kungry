@@ -53,7 +53,6 @@ class RestaurantFragment : Fragment() {
                     } catch (e: Exception) {
                         nextPage = null
                     }
-
                     array = RestaurantLight.createRestaurants(content.getJSONArray("results"))
                     val recycler = view?.findViewById<RecyclerView>(R.id.list)
 
@@ -122,11 +121,15 @@ class RestaurantFragment : Fragment() {
         // Set the adapter
         if (view is RecyclerView) {
             with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
+                layoutManager = LinearLayoutManager(context)
                 adapter = MyRestaurantRecyclerViewAdapter(array)
+                addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        //val pos = (adapter as Any).itemCount
+                        val lastItem = (layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                        super.onScrolled(recyclerView, dx, dy)
+                    }
+                })
             }
         }
         return view
