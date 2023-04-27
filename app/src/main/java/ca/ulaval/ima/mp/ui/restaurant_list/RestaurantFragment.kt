@@ -127,6 +127,7 @@ class RestaurantFragment : Fragment() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         //val pos = (adapter as Any).itemCount
                         val lastItem = (layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                        println(lastItem)
                         super.onScrolled(recyclerView, dx, dy)
                     }
                 })
