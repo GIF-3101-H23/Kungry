@@ -34,6 +34,8 @@ class MyRestaurantRecyclerViewAdapter(
 
     }
 
+
+
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
