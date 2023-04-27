@@ -43,7 +43,7 @@ class MyRestaurantRecyclerViewAdapter(
         holder.distanceView.text = "${item.distance} km"
         holder.countView.text = "(${item.count})"
         holder.titleView.text = item.name
-        holder.typeView.text = item.type.toString()
+        holder.typeView.text = "${item.type}-${item.cuisine[0].name}"
         holder.ratingBar.rating = item.average.toFloat()
 
         //holder.idView.text = item.id
