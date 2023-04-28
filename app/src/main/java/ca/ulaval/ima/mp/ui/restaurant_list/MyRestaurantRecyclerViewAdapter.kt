@@ -11,6 +11,7 @@ import ca.ulaval.ima.mp.databinding.FragmentItemBinding
 
 import ca.ulaval.ima.mp.ui.restaurant_list.placeholder.PlaceholderContent.PlaceholderItem
 import ca.ulaval.ima.mp.utilities.RestaurantLight
+import ca.ulaval.ima.mp.utilities.Review
 import com.squareup.picasso.Picasso
 
 
@@ -21,6 +22,15 @@ import com.squareup.picasso.Picasso
 class MyRestaurantRecyclerViewAdapter(
     private val values: List<RestaurantLight>
 ) : RecyclerView.Adapter<MyRestaurantRecyclerViewAdapter.ViewHolder>() {
+    private var onClickListener: MyRestaurantRecyclerViewAdapter.OnClickListener? = null
+
+    interface OnClickListener {
+        fun onClick(id:Int)
+    }
+    fun setOnClickListener(onClickListener: OnClickListener) {
+        this.onClickListener = onClickListener
+
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -34,8 +44,6 @@ class MyRestaurantRecyclerViewAdapter(
 
     }
 
-
-
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
@@ -45,6 +53,9 @@ class MyRestaurantRecyclerViewAdapter(
         holder.titleView.text = item.name
         holder.typeView.text = "${item.type}-${item.cuisine[0].name}"
         holder.ratingBar.rating = item.average.toFloat()
+        holder.itemView.setOnClickListener {
+            onClickListener?.onClick(item.id)
+        }
 
         //holder.idView.text = item.id
         //holder.contentView.text = item.content
@@ -61,10 +72,6 @@ class MyRestaurantRecyclerViewAdapter(
         val countView = binding.itemCounts
         val distanceView = binding.itemDistance
         //val contentView: TextView = binding.content
-
-        override fun toString(): String {
-            return super.toString() + " '" + "'"
-        }
     }
 
 }

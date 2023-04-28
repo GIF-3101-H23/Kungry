@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ca.ulaval.ima.mp.R
+import ca.ulaval.ima.mp.ui.RestaurantDetails.RestaurantDetailsFragment
 import ca.ulaval.ima.mp.utilities.RestaurantLight
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
@@ -57,7 +58,18 @@ class RestaurantFragment : Fragment() {
                     val recycler = view?.findViewById<RecyclerView>(R.id.list)
 
                     if (recycler != null) {
-                        recycler.adapter = MyRestaurantRecyclerViewAdapter(array)
+                        val adapter = MyRestaurantRecyclerViewAdapter(array)
+                        adapter.setOnClickListener(object :
+                            MyRestaurantRecyclerViewAdapter.OnClickListener{
+                            override fun onClick(id: Int) {
+                                activity?.supportFragmentManager?.beginTransaction()
+                                    ?.replace(R.id.container, RestaurantDetailsFragment(id))
+                                    ?.addToBackStack(null)
+                                    ?.commit()
+
+                            }
+                        })
+                        recycler.adapter = adapter
                     }
                 },
                 { error ->
