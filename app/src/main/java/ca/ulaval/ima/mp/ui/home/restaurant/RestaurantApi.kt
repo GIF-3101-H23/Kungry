@@ -25,6 +25,7 @@ class RestaurantApi(private val baseUrl: String) {
                 .url("$baseUrl/restaurant?page=$nextPage&page_size=$pageSize")
                 .build()
             println("Connecting to $baseUrl...")
+            var i=0
             try {
                 httpClient.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) {
@@ -39,10 +40,12 @@ class RestaurantApi(private val baseUrl: String) {
                         val restaurantsJson = content.getJSONArray("results")
                         val batchRestaurants = createRestaurants(restaurantsJson)
                         // Locations
+
                         restaurants.addAll(batchRestaurants)
                         if (next == null) {
                             hasNextPage = false
                         } else {
+                            println(next)
                             nextPage = next
                         }
                     }
@@ -54,7 +57,7 @@ class RestaurantApi(private val baseUrl: String) {
                 throw e
             }
         }
-
+        print("ici")
         return restaurants
     }
 
