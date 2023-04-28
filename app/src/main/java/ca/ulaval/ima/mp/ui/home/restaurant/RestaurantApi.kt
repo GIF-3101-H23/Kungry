@@ -40,6 +40,7 @@ class RestaurantApi(private val baseUrl: String) {
                         val restaurantsJson = content.getJSONArray("results")
                         val batchRestaurants = createRestaurants(restaurantsJson)
                         // Locations
+                        //eieiwe
 
                         restaurants.addAll(batchRestaurants)
                         if (next == null) {
