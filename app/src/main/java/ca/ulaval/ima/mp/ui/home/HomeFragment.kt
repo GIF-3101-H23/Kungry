@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import ca.ulaval.ima.mp.databinding.FragmentHomeBinding
 import ca.ulaval.ima.mp.ui.home.restaurant.RestaurantLight
 import ca.ulaval.ima.mp.ui.home.restaurant.RestaurantService
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.launch
 import java.sql.Types
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
@@ -71,7 +73,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             // Récupérer la nouvelle position ici et mettre à jour la carte
             val currentLatLng = LatLng(location.latitude, location.longitude)
             googleMap.addMarker(MarkerOptions().position(currentLatLng).title("Marker at current location"))
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng))
+           // googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng))
         }
 
         override fun onProviderEnabled(provider: String) {}
@@ -138,26 +140,43 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         if (currentLatLng != null) {
            googleMap.addMarker(MarkerOptions().position(currentLatLng).title("POSITION"))
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,10f))
+           // val mapostion = LatLng(46.8427887,-71.3647232)
+           // googleMap.addMarker(MarkerOptions().position(mapostion).title("BENO"))
 
 
-            val builder = LatLngBounds.Builder()
+            val maliste = ArrayList<ca.ulaval.ima.mp.utilities.RestaurantLight>()
 
-            RestaurantService().getRestaurants(
+       RestaurantService().getRestaurants(
                 onSuccess = {
                     // handle the nearby restaurants here
                          restaurants ->
                     // Calculate the distance between the user's location and each restaurant location
                     for (resto in restaurants) {
 
-                        println("name:${resto.name} and location :${resto.location} ")
-                        val locationLat = LatLng(resto.location.latitude, resto.location.longitude)
-                       println("mon lat:${locationLat.latitude} and longitude :${locationLat.longitude}")
+                        maliste.add(resto)
+
+                       // googleMap.addMarker(MarkerOptions().position(locationLat).title("Mes restos"))
                     }
+
                     },
                 onError = {
                     // handle the error here
+
                 }
-            )
+            ).run {
+                println("yassa")
+
+
+           for (resto in maliste)
+                {
+                    val mapostion = LatLng(resto.location.latitude,resto.location.longitude)
+                    googleMap.addMarker(MarkerOptions().position(mapostion).title(resto.name))
+
+                }
+       }
+
+
+
         }
 
 

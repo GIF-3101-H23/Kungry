@@ -16,7 +16,7 @@ class RestaurantApi(private val baseUrl: String) {
     private val httpClient = OkHttpClient()
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getRestaurants(page: Int = 1,pageSize: Int = 20): List<ca.ulaval.ima.mp.utilities.RestaurantLight> {
+    fun getRestaurants(page: Int = 2,pageSize: Int = 20): List<ca.ulaval.ima.mp.utilities.RestaurantLight> {
         val restaurants = mutableListOf<ca.ulaval.ima.mp.utilities.RestaurantLight>()
         var hasNextPage = true
         var nextPage = page
