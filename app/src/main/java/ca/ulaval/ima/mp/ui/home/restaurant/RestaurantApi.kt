@@ -3,6 +3,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import ca.ulaval.ima.mp.ui.home.restaurant.*
+import ca.ulaval.ima.mp.utilities.RestaurantLight.Companion.createRestaurants
 import okhttp3.Credentials
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -15,8 +16,8 @@ class RestaurantApi(private val baseUrl: String) {
     private val httpClient = OkHttpClient()
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getRestaurants(page: Int = 1,pageSize: Int = 20): List<RestaurantLight> {
-        val restaurants = mutableListOf<RestaurantLight>()
+    fun getRestaurants(page: Int = 1,pageSize: Int = 20): List<ca.ulaval.ima.mp.utilities.RestaurantLight> {
+        val restaurants = mutableListOf<ca.ulaval.ima.mp.utilities.RestaurantLight>()
         var hasNextPage = true
         var nextPage = page
         while (hasNextPage) {
@@ -36,7 +37,7 @@ class RestaurantApi(private val baseUrl: String) {
                         val next = content.optInt("next")
                         val previous = content.optInt("previous")
                         val restaurantsJson = content.getJSONArray("results")
-                        val batchRestaurants = RestaurantService.convertRestaurants(restaurantsJson)
+                        val batchRestaurants = createRestaurants(restaurantsJson)
                         restaurants.addAll(batchRestaurants)
                         if (next == null) {
                             hasNextPage = false
@@ -44,6 +45,8 @@ class RestaurantApi(private val baseUrl: String) {
                             nextPage = next
                         }
                     }
+
+                    return restaurants
                 }
             } catch (e: IOException) {
                 println("Error connecting to $baseUrl: ${e.message}")
