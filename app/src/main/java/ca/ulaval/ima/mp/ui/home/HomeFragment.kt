@@ -10,6 +10,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import java.sql.Types
 
@@ -125,8 +127,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
 
         googleMap = map
-
-
         // Customize the map
         googleMap.uiSettings.isZoomControlsEnabled = true
         googleMap.uiSettings.isMyLocationButtonEnabled = true
@@ -136,19 +136,24 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         // Add a marker in current location and move the camera
         val currentLatLng = location?.let { LatLng(it.latitude, it.longitude) }
         if (currentLatLng != null) {
-            googleMap.addMarker(MarkerOptions().position(currentLatLng).title("Home"))
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,15f))
+           googleMap.addMarker(MarkerOptions().position(currentLatLng).title("POSITION"))
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,10f))
 
-                    // Handle error
-            // Call getNearbyRestaurants function to get the nearby restaurants
-            val position = Location("").apply {
-                latitude = currentLatLng.latitude
-                longitude = currentLatLng.longitude
-            }
-            RestaurantService().getNearbyRestaurants(position, 1.0,
+
+            val builder = LatLngBounds.Builder()
+
+            RestaurantService().getRestaurants(
                 onSuccess = {
                     // handle the nearby restaurants here
-                },
+                         restaurants ->
+                    // Calculate the distance between the user's location and each restaurant location
+                    for (resto in restaurants) {
+
+                        println("name:${resto.name} and location :${resto.location} ")
+                        val locationLat = LatLng(resto.location.latitude, resto.location.longitude)
+                       println("mon lat:${locationLat.latitude} and longitude :${locationLat.longitude}")
+                    }
+                    },
                 onError = {
                     // handle the error here
                 }
