@@ -16,7 +16,7 @@ class RestaurantApi(private val baseUrl: String) {
     private val httpClient = OkHttpClient()
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getRestaurants(page: Int = 2,pageSize: Int = 20): List<ca.ulaval.ima.mp.utilities.RestaurantLight> {
+    fun getRestaurants(page: Int ,pageSize: Int ): List<ca.ulaval.ima.mp.utilities.RestaurantLight> {
         val restaurants = mutableListOf<ca.ulaval.ima.mp.utilities.RestaurantLight>()
         var hasNextPage = true
         var nextPage = page
@@ -25,7 +25,6 @@ class RestaurantApi(private val baseUrl: String) {
                 .url("$baseUrl/restaurant?page=$nextPage&page_size=$pageSize")
                 .build()
             println("Connecting to $baseUrl...")
-            var i=0
             try {
                 httpClient.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) {
@@ -46,7 +45,6 @@ class RestaurantApi(private val baseUrl: String) {
                         if (next == null) {
                             hasNextPage = false
                         } else {
-                            println(next)
                             nextPage = next
                         }
                     }
