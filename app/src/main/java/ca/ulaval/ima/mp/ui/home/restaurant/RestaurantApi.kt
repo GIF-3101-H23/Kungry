@@ -38,6 +38,7 @@ class RestaurantApi(private val baseUrl: String) {
                         val previous = content.optInt("previous")
                         val restaurantsJson = content.getJSONArray("results")
                         val batchRestaurants = createRestaurants(restaurantsJson)
+                        // Locations
                         restaurants.addAll(batchRestaurants)
                         if (next == null) {
                             hasNextPage = false
