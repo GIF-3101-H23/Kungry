@@ -35,7 +35,7 @@ class RestaurantService {
         }
             thread.start()
             thread.join()
-            println("requete fini")
+            println("requete finwi")
             println("page:{$page}")
             page++
         }
