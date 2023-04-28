@@ -16,12 +16,12 @@ class RestaurantService {
     private val restaurantApi = RestaurantApi("https://kungry.infomobile.app/api/v1")
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getRestaurants(
+    fun getRestaurants  (
 
         onSuccess: (restaurants: List<ca.ulaval.ima.mp.utilities.RestaurantLight>) -> Unit,
         onError: (error: String) -> Unit
     ) {
-        val pageSize = 30 // Nombre d'éléments par page
+
         var page = 1 // Numéro de la page à récupérer
         for (i in 0 until pageSize)
         { val thread = Thread {
@@ -43,7 +43,9 @@ class RestaurantService {
     }
 
 
-
+    companion object {
+        const val pageSize = 1
+    }
 
 
 
