@@ -152,8 +152,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                          restaurants ->
                     // Calculate the distance between the user's location and each restaurant location
                     for (resto in restaurants) {
+                        if(maliste.size < RestaurantService.pageSize){
+                            maliste.add(resto)
+                        }
 
-                        maliste.add(resto)
 
                        // googleMap.addMarker(MarkerOptions().position(locationLat).title("Mes restos"))
                     }
@@ -164,8 +166,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
                 }
             ).run {
-                println("yassa")
-
+                println("c'est cadeau sa")
 
            for (resto in maliste)
                 {
