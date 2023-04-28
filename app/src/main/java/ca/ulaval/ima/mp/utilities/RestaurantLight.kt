@@ -2,7 +2,7 @@ package ca.ulaval.ima.mp.utilities
 
 import org.json.JSONArray
 import org.json.JSONObject
-import java.util.Objects
+
 
 data class Cuisine(val id: Int, val name: String){
 }
