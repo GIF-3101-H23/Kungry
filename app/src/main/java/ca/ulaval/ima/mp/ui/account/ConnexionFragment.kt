@@ -22,13 +22,8 @@ import ca.ulaval.ima.mp.utilities.AccountLogin
 import ca.ulaval.ima.mp.utilities.InteractionAPI
 import ca.ulaval.ima.mp.utilities.getInstanceAPI
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class ConnexionFragment : Fragment() {
 
-    private var param1: String? = null
-    private var param2: String? = null
     private var _binding: FragmentConnexionBinding?=null
 
     lateinit var mTextMotDePasse: EditText

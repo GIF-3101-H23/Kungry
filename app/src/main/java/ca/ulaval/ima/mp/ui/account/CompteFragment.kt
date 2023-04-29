@@ -16,9 +16,6 @@ import ca.ulaval.ima.mp.utilities.getInstanceAPI
 import ca.ulaval.ima.mp.databinding.FragmentMonCompteBinding
 
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class CompteFragment: Fragment(){
 
     private var _binding: FragmentMonCompteBinding? = null
@@ -34,7 +31,7 @@ class CompteFragment: Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.setTitle("Compte")
+        activity?.setTitle("Account")
         activity?.actionBar?.setDisplayHomeAsUpEnabled(false)
     }
 

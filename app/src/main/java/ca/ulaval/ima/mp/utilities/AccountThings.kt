@@ -3,10 +3,9 @@ package ca.ulaval.ima.mp.utilities
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+
 const val CLIENT_ID = "STO4WED2NTDDxjLs8ODios5M15HwsrRlydsMa1t0"
-const val CLIENT_SECRET = "YOVWGpjSnHd5AYDxGBR2CIB09ZYM1OPJGnH3ijkKwrUMVvwLpr\n" +
-        "UmLf6fxku06ClUKTAEl5AeZN36V9QYBYvTtrLMrtUtXVuXOGWle\n" +
-        "QGYyApC2a469l36TdlXFqAG1tpK"
+const val CLIENT_SECRET = "YOVWGpjSnHd5AYDxGBR2CIB09ZYM1OPJGnH3ijkKwrUMVvwLprUmLf6fxku06ClUKTAEl5AeZN36V9QYBYvTtrLMrtUtXVuXOGWleQGYyApC2a469l36TdlXFqAG1tpK"
 const val INDENT = "   "
 
 @Parcelize
@@ -16,10 +15,9 @@ data class CreateAccountCreate(
     val email : String,
     val password : String,
     val client_id : String = CLIENT_ID,
-    val client_secret : String = CLIENT_SECRET
+    val client_secret : String = CLIENT_SECRET,
 ) : Parcelable {
     fun getString() : String = "CreateAccountCreate :\n"+"prenom: $first_name, nom: $last_name; \nemail: $email;\npassword: $password;".prependIndent(INDENT)
-    fun print() = println(getString())
 }
 
 @Parcelize

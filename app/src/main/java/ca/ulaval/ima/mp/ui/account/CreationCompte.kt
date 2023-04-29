@@ -21,11 +21,6 @@ import ca.ulaval.ima.mp.utilities.getInstanceAPI
 import ca.ulaval.ima.mp.databinding.FragmentCreationCompteBinding
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 /**
  * A simple [Fragment] subclass.
  * Use the [CreationCompte.newInstance] factory method to
@@ -33,9 +28,7 @@ private const val ARG_PARAM2 = "param2"
  */
 
 class CreationCompte : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
     private var _binding: FragmentCreationCompteBinding? = null
 
     lateinit var mTextNom: EditText
@@ -80,8 +73,7 @@ class CreationCompte : Fragment() {
                     mTextPrenom.text.toString(),
                     mTextNom.text.toString(),
                     mTextEmail.text.toString(),
-                    mTextMotPass.text.toString()
-                )
+                    mTextMotPass.text.toString())
 
                 getInstanceAPI().createAccount(createAccountId)
 

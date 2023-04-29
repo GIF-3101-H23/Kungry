@@ -14,19 +14,20 @@ import java.io.IOException
 import java.lang.Exception
 
 
-private val api = InteractionAPI()
+private val api = InteractionAPI( "https://kungry.infomobile.app/api/v1/account")
 fun getInstanceAPI() : InteractionAPI = api
 
 @Parcelize
-data class InteractionAPI(val host : String = "kungry.infomobile.app") : Parcelable {
+data class InteractionAPI(val host : String) : Parcelable {
 
     // initialisation d'attributs
-    private val scheme = "https"
+
+    //private val scheme = "https"
 
     private val client = OkHttpClient()
 
-    var token : TokenOutput? = null
-    var prevToken : TokenOutput? = null
+    var token: TokenOutput? = null
+    var prevToken: TokenOutput? = null
 
     var connected = false
 
@@ -36,42 +37,29 @@ data class InteractionAPI(val host : String = "kungry.infomobile.app") : Parcela
     var accountDoesntExist = false
     var notFound = false
 
-    var account : Account? = null
-
+    var account: Account? = null
 
     var requestActive = false
 
 
-    // fonctions requêtes API account
 
+    // fonctions requêtes API account
     /**
      * Fonction qui exécute POST/account/
      *
      * @param[data] information de création de compte
      */
-    fun POSTaccount(data: CreateAccountCreate) {
-        requestActive = true
-
-        //prevToken = token
-        token = null
-
+    fun POSTaccount(data: CreateAccountCreate)
+    {
         val data_json = createJSONFromCreateAccountCreate(data)
-
         val formBody: RequestBody =
             data_json.toString().toRequestBody("application/json".toMediaTypeOrNull())
 
-        val url = HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
-            .addPathSegment("api")
-            .addPathSegment("v1")
-            .addPathSegment("account")
-            .build()
-
         val request = Request.Builder()
-            .url(url)
+            .url("https://kungry.infomobile.app/api/v1/account/")
             .post(formBody)
             .build()
+        println("Connecting to Url")
 
         val response = client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -81,8 +69,8 @@ data class InteractionAPI(val host : String = "kungry.infomobile.app") : Parcela
 
             override fun onResponse(call: Call, response: Response) {
                 response.use {
-
                     if (!response.isSuccessful) {
+                        println("Not connected")
                         if (response.code == 409) {
                             accountAlreadyExists = true
                             //prevToken
@@ -91,15 +79,18 @@ data class InteractionAPI(val host : String = "kungry.infomobile.app") : Parcela
                         requestActive = false
                         throw IOException("Unexpected code $response")
                     }
+                    else {
+                        println("Connected")
 
-                    val str_json = response.body?.string()
+                        val str_json = response.body?.string()
 
-                    val obj = JSONObject(str_json)
+                        val obj = JSONObject(str_json)
 
-                    token = createTokenOutputFromJSON(obj.getJSONObject("content"))
+                        token = createTokenOutputFromJSON(obj.getJSONObject("content"))
 
-                    connected = true
-                    requestActive = false
+                        connected = true
+                        requestActive = false
+                    }
                 }
             }
         })
@@ -120,19 +111,11 @@ data class InteractionAPI(val host : String = "kungry.infomobile.app") : Parcela
         val formBody: RequestBody =
             data_json.toString().toRequestBody("application/json".toMediaTypeOrNull())
 
-        val url = HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
-            .addPathSegment("api")
-            .addPathSegment("v1")
-            .addPathSegment("account")
-            .addPathSegment("login")
-            .build()
-
         val request = Request.Builder()
-            .url(url)
+            .url("https://kungry.infomobile.app/api/v1/account/login")
             .post(formBody)
             .build()
+        println("Connecting to Url")
 
         val response = client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -171,19 +154,11 @@ data class InteractionAPI(val host : String = "kungry.infomobile.app") : Parcela
 
         account = null
 
-        val url = HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
-            .addPathSegment("api")
-            .addPathSegment("v1")
-            .addPathSegment("account")
-            .addPathSegment("me")
-            .build()
-
         val request = Request.Builder()
-            .url(url)
+            .url("https://kungry.infomobile.app/api/v1/account/me")
             .header("Authorization", "${token?.token_type} ${token?.access_token}")
             .build()
+        println("Connecting to Url")
 
         val response = client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -200,15 +175,17 @@ data class InteractionAPI(val host : String = "kungry.infomobile.app") : Parcela
                         requestActive = false
                         throw IOException("Unexpected code $response")
                     }
+                    else {
 
-                    val str_json = response.body?.string()
+                        val str_json = response.body?.string()
 
-                    val obj = JSONObject(str_json)
+                        val obj = JSONObject(str_json)
 
-                    account = createAccountFromJSON(obj.getJSONObject("content"))
+                        account = createAccountFromJSON(obj.getJSONObject("content"))
 
 
-                    requestActive = false
+                        requestActive = false
+                    }
                 }
             }
         })
@@ -232,19 +209,12 @@ data class InteractionAPI(val host : String = "kungry.infomobile.app") : Parcela
         val formBody: RequestBody =
             data_json.toString().toRequestBody("application/json".toMediaTypeOrNull())
 
-        val url = HttpUrl.Builder()
-            .scheme(scheme)
-            .host(host)
-            .addPathSegment("api")
-            .addPathSegment("v1")
-            .addPathSegment("account")
-            .addPathSegment("refresh_token")
-            .build()
 
         val request = Request.Builder()
-            .url(url)
+            .url("https://kungry.infomobile.app/api/v1/account/refresh_token")
             .post(formBody)
             .build()
+        println("Connecting to Url")
 
         val response = client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -342,7 +312,7 @@ data class InteractionAPI(val host : String = "kungry.infomobile.app") : Parcela
         return Creator(first_name, last_name)
     }
 
-    // création d'objets à partir de JSON
+    //    // création de JSON à partir des valeurs des data
     private fun createJSONFromCreateAccountCreate(data: CreateAccountCreate) : JSONObject {
         return JSONObject()
             .put("client_id", data.client_id)
@@ -368,6 +338,71 @@ data class InteractionAPI(val host : String = "kungry.infomobile.app") : Parcela
             .put("client_secret", data.client_secret)
     }
 
+
+
+//
 }
+
+//   fun POSTaccount(data: CreateAccountCreate) {
+//        requestActive = true
+//
+//        //prevToken = token
+//        token = null
+//
+//        val data_json = createJSONFromCreateAccountCreate(data)
+//
+//        val formBody: RequestBody =
+//            data_json.toString().toRequestBody("application/json".toMediaTypeOrNull())
+//
+//        val url = HttpUrl.Builder()
+////            .scheme(scheme)
+//            .host(host)
+////            .addPathSegment("api")
+////            .addPathSegment("v1")
+////            .addPathSegment("account")
+//            .build()
+//
+//        println(url)
+//
+//        val request = Request.Builder()
+//            .url("https://kungry.infomobile.app/api/v1/account/")
+//            .post(formBody)
+//            .build()
+//
+//        val response = client.newCall(request).enqueue(object : Callback {
+//            override fun onFailure(call: Call, e: IOException) {
+//                requestActive = false
+//                e.printStackTrace()
+//            }
+//
+//            override fun onResponse(call: Call, response: Response) {
+//                response.use {
+//
+//                    if (!response.isSuccessful) {
+//                        println("Not connected")
+//                        if (response.code == 409) {
+//                            accountAlreadyExists = true
+//                            //prevToken
+//                        }
+//                        //error = true
+//                        requestActive = false
+//                        throw IOException("Unexpected code $response")
+//                    }
+//                    println("Connected")
+//                    val str_json = response.body?.string()
+//
+//                    val obj = JSONObject(str_json)
+//
+//                    token = createTokenOutputFromJSON(obj.getJSONObject("content"))
+//
+//                    connected = true
+//                    requestActive = false
+//                }
+//            }
+//        })
+//    }
+//
+
+
 
 
