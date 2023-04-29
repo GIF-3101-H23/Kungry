@@ -44,7 +44,7 @@ class RestaurantService {
 
 
     companion object {
-        const val pageSize = 1
+        const val pageSize = 10
     }
 
 
