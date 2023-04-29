@@ -8,8 +8,8 @@ import org.json.JSONObject
 data class Creator(val firstName: String, val lastName: String)
 
 
-data class Review(val id:Int, val creator: Creator, val stars:Int, val image:String?,
-            val comment:String, val date: String) {
+data class Review(val id:Int, val creatore: Creatore, val stars:Int, val image:String?,
+                  val comment:String, val date: String) {
 
     companion object {
         fun createReviews(restos: JSONArray): ArrayList<Review>
@@ -26,7 +26,7 @@ data class Review(val id:Int, val creator: Creator, val stars:Int, val image:Str
         fun createReview(resto: JSONObject): Review
         {
             val creator = resto.getJSONObject("creator")
-            return Review(resto.getInt("id"), Creator(creator.getString("first_name"), creator.getString("last_name")),
+            return Review(resto.getInt("id"), Creatore(creator.getString("first_name"), creator.getString("last_name")),
                         resto.getInt("stars"), resto.getString("image"), resto.getString("comment"), resto.getString("date") )
         }
     }

@@ -71,7 +71,7 @@ data class RefreshTokenInput(
 
 
 @Parcelize
-data class Creator(val first_name: String, val last_name: String) : Parcelable {
+data class Creatore(val first_name: String, val last_name: String) : Parcelable {
     fun getString() : String = "Creator : \n" +
             "prenom: $first_name, nom: $last_name".prependIndent(INDENT)
     fun print() = println(getString())

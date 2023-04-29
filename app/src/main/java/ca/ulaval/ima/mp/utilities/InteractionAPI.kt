@@ -6,12 +6,9 @@ import kotlinx.parcelize.Parcelize
 
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
-import java.io.File
 import java.io.IOException
-import java.lang.Exception
 
 
 private val api = InteractionAPI( "https://kungry.infomobile.app/api/v1/account")
@@ -266,7 +263,7 @@ data class InteractionAPI(val host : String) : Parcelable {
 
     fun refreshToken() : TokenOutput? {
         POSTaccountRefreshToken()
-        while (requestActive) {println("waiting /account/refresh_token")}
+      //  while (requestActive) {println("waiting /account/refresh_token")}
         if (error) {
             println("REFRESH_TOKEN FAILED")
             error = false
@@ -305,11 +302,11 @@ data class InteractionAPI(val host : String) : Parcelable {
     }
 
 
-    private fun createCreatorFromJSON(obj : JSONObject) : Creator {
+    private fun createCreatorFromJSON(obj : JSONObject) : Creatore {
         val first_name = obj.getString("first_name")
         val last_name = obj.getString("last_name")
 
-        return Creator(first_name, last_name)
+        return Creatore(first_name, last_name)
     }
 
     //    // création de JSON à partir des valeurs des data

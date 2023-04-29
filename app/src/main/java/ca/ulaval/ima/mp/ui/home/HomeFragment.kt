@@ -167,7 +167,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
                 }
             ).run {
-                println("c'est cadeau sa")
 
            for (resto in maliste)
                 {
