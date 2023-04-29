@@ -135,16 +135,24 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         googleMap.uiSettings.isMyLocationButtonEnabled = true
 
         val location = getLastKnownLocation(requireContext())
+        val distancenmax = 2000
 
         // Add a marker in current location and move the camera
         val currentLatLng = location?.let { LatLng(it.latitude, it.longitude) }
+        val currentPosition = Location("current").apply {
+            if (currentLatLng != null) {
+                latitude = currentLatLng.latitude
+            }
+            if (currentLatLng != null) {
+                longitude =currentLatLng.longitude
+            }
+            // remplacer les valeurs lat/long par la position actuelle obtenue par géolocalisation
+        }
+
+
         if (currentLatLng != null) {
            googleMap.addMarker(MarkerOptions().position(currentLatLng).title("POSITION"))
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,10f))
-           // val mapostion = LatLng(46.8427887,-71.3647232)
-           // googleMap.addMarker(MarkerOptions().position(mapostion).title("BENO"))
-
-
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,13f))
             val maliste = ArrayList<ca.ulaval.ima.mp.utilities.RestaurantLight>()
 
        RestaurantService().getRestaurants(
@@ -154,7 +162,17 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     // Calculate the distance between the user's location and each restaurant location
                     for (resto in restaurants) {
                         if(maliste.size < RestaurantService.pageSize){
-                            maliste.add(resto)
+
+                                // remplacer les valeurs lat/long par la position actuelle obtenue par géolocalisation
+
+                           val restoLocation = Location("restopos")
+                            restoLocation.latitude = resto.location.latitude
+                            restoLocation.longitude = resto.location.longitude
+                            val distance = currentPosition.distanceTo(restoLocation)
+                            if(distance <= distancenmax){
+                                maliste.add(resto)
+                            }
+
                         }
 
 
@@ -174,6 +192,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     googleMap.addMarker(MarkerOptions().position(mapostion).title(resto.name))
 
                 }
+           println(maliste.size)
        }
 
 
